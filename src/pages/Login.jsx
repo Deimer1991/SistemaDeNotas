@@ -20,7 +20,7 @@ export default function Login() {
         <div className="bg-white rounded-2xl shadow-2xl p-8 md:p-10">
           {/* Header */}
           <div className="text-center mb-8">
-            <div className="text-6xl mb-4">🔐</div>
+            <div className="text-6xl mb-4"></div>
             <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2">
               Bienvenido
             </h1>
@@ -32,7 +32,7 @@ export default function Login() {
             {/* Usuario */}
             <div>
               <label htmlFor="uname" className="block text-sm font-semibold text-gray-700 mb-2">
-                👤 Usuario
+                 Usuario
               </label>
               <input
                 type="text"
@@ -48,7 +48,7 @@ export default function Login() {
             {/* Contraseña */}
             <div>
               <label htmlFor="psw" className="block text-sm font-semibold text-gray-700 mb-2">
-                🔑 Contraseña
+                 Contraseña
               </label>
               <div className="relative">
                 <input
