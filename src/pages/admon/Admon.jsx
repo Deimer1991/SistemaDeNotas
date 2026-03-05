@@ -85,7 +85,7 @@ const Admon = () => {
         <div className="w-32 h-32 mb-4">
           <img
             id="imagen-perfil"
-            src="/views/imagenes/logo perfil.jpg"
+            src="/src/assets/logo perfil.jpg"
             alt="Logo perfil"
             className="w-full h-full object-cover rounded-full"
           />
@@ -139,8 +139,8 @@ const Admon = () => {
             value={formData.rol}
             onChange={(e) => setFormData({ ...formData, rol: e.target.value })}
           >
-            <option value="Usuario">Usuario</option>
-            <option value="Editor">Editor</option>
+            <option value="Usuario">Estudiante</option>
+            <option value="Editor">Profesor</option>
             <option value="Administrador">Administrador</option>
           </select>
           <button
