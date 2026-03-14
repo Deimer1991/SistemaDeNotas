@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import "./styles/index.css";
-import Table from "../../components/Table";
+/* import "./styles/index.css";
+ */ import Table from "../../components/Table";
 
 const Admon = () => {
   // 1. Cargar datos iniciales (Mock + LocalStorage)

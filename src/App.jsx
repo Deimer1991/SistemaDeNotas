@@ -1,19 +1,19 @@
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Admon from "./pages/admon/Admon";
 import AuthGuard from "./components/AuthGuard";
+import Login from "./pages/login/login";
+
 function App() {
   return (
     <BrowserRouter>
-      {/* <nav style={{ padding: "1rem", borderBottom: "1px solid #ccc" }}>
-        <Link style={{ marginRight: "10px" }} to="/">
-          Inicio
-        </Link>
-        <Link to="/settings">Configuración</Link>
-      </nav> */}
+      {/* Puedes reactivar el nav si deseas navegar entre Login y Admin manualmente para probar */}
 
       <main style={{ padding: "1rem" }}>
         <Routes>
-          <Route path="/" element={<Admon />} />
+          {/* 1. RUTA PÚBLICA: El usuario llega aquí primero */}
+          <Route path="/" element={<Login />} />
+
+          {/* 2. RUTA PROTEGIDA: Solo accesible si hay token en localStorage */}
           <Route
             path="/admin"
             element={
@@ -22,8 +22,17 @@ function App() {
               </AuthGuard>
             }
           />
-          {/* Ruta para manejar errores 404 */}
-          <Route path="*" element={<h2>404 - Página no encontrada</h2>} />
+
+          {/* 3. MANEJO DE ERRORES: 404 Not Found */}
+          <Route
+            path="*"
+            element={
+              <div style={{ textAlign: "center", marginTop: "50px" }}>
+                <h2>404</h2>
+                <p>Página no encontrada</p>
+              </div>
+            }
+          />
         </Routes>
       </main>
     </BrowserRouter>
