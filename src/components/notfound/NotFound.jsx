@@ -16,7 +16,7 @@ export default function NotFound() {
           <li>
             <Link
               to="/"
-              className="inline-block px-10 py-3 bg-linear-to-r from-blue-600 to-indigo-600 text-white font-black rounded-2xl shadow-lg shadow-blue-500/30 hover:scale-105 active:scale-95 transition-all uppercase tracking-widest text-sm"
+              className="inline-block px-10 py-3 bg-blue-700 text-white font-bold rounded-lg shadow-sm hover:bg-blue-800 transition-colors uppercase tracking-wider text-sm border-b-4 border-blue-900 active:border-b-0 active:translate-y-0.5"
             >
               Regresar al Login
             </Link>
