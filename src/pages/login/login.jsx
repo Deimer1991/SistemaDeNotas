@@ -1,79 +1,122 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { showAlert } from "../../components/Notyficaciones";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-
   const navigate = useNavigate();
 
-  const handleLogin = (e) => {
-    e.preventDefault(); // Evita que la página se recargue
+  // 1. Estado para los campos del formulario
+  const [datos, setDatos] = useState({
+    correo: "",
+    contrasena: "",
+  });
 
-    // SIMULACIÓN: Credenciales quemadas (Hardcoded)
-    if (email === "alejo@ejemplo.com" && password === "123456") {
-      // 1. Guardamos el "token" en LocalStorage
-      localStorage.setItem("user_token", "token-secreto-123");
+  // 2. Manejador de cambios para los inputs
+  const handleInputChange = (e) => {
+    setDatos({
+      ...datos,
+      [e.target.name]: e.target.value,
+    });
+  };
 
-      // 2. Limpiamos errores si los había
-      showAlert({
-        title: "Inicio de sesión exitoso",
-        text: "Bienvenido, has iniciado sesión correctamente.",
-        icon: "success",
-        color: "#28a745",
-        btnText: "Continuar",
-        navigate: navigate,
-        url: "/admin",
-      });
-      setError("");
+  // 3. Funciones de LocalStorage
+  const consultarLocalStorage = (llave) => {
+    const datosGuardados = localStorage.getItem(llave);
+    return datosGuardados ? JSON.parse(datosGuardados) : [];
+  };
+
+  // 4. Lógica de Envío
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const usuarios = consultarLocalStorage("usuarios");
+
+    const usuarioEncontrado = usuarios.find(
+      (u) => u.correo === datos.correo && u.contrasena === datos.contrasena,
+    );
+
+    if (usuarioEncontrado) {
+      // Guardamos con la llave "user_token" que es la que busca tu AuthGuard
+      localStorage.setItem("user_token", JSON.stringify(usuarioEncontrado));
+
+      const audio = new Audio("/views/audios/magiamagia.opus");
+      audio.volume = 0.5;
+      audio.play().catch((err) => console.warn("Audio error:", err));
+
+      // Redirigir a la ruta protegida en App.js
+      navigate("/admin");
     } else {
-      showAlert({
-        title: "Error de inicio de sesión",
-        text: "Credenciales incorrectas. Prueba con alejo@ejemplo.com y 123456",
+      Swal.fire({
         icon: "error",
-        color: "#dc3545",
-        btnText: "Intentar de nuevo",
-        navigate: navigate,
-        url: "/",
+        title: "Error",
+        text: "Correo o contraseña incorrectos",
+        confirmButtonColor: "#1d4ed8",
       });
-      setError("");
     }
   };
 
   return (
-    <div
-      style={{ maxWidth: "300px", margin: "50px auto", textAlign: "center" }}
-    >
-      <h2>Iniciar Sesión</h2>
+    <main className="grow flex items-center justify-center px-4 min-h-screen bg-gray-100">
+      <div className="max-w-md w-full bg-white rounded-lg shadow-xl p-8">
+        <h1 className="text-2xl font-bold text-center text-blue-700 mb-6">
+          LOGIN
+        </h1>
 
-      <form
-        onSubmit={handleLogin}
-        style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-      >
-        <input
-          type="email"
-          placeholder="Email "
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Contraseña "
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="formulario__grupo">
+            <label
+              htmlFor="correo"
+              className="block font-semibold text-gray-700 mb-1"
+            >
+              Correo
+            </label>
+            <input
+              type="email"
+              id="correo"
+              name="correo"
+              value={datos.correo}
+              onChange={handleInputChange}
+              placeholder="Ingrese su correo"
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
 
-        {error && <p style={{ color: "red", fontSize: "12px" }}>{error}</p>}
+          <div className="formulario__grupo">
+            <label
+              htmlFor="contrasena"
+              className="block font-semibold text-gray-700 mb-1"
+            >
+              Contraseña
+            </label>
+            <input
+              type="password"
+              id="contrasena"
+              name="contrasena"
+              value={datos.contrasena}
+              onChange={handleInputChange}
+              placeholder="Ingrese su contraseña"
+              required
+              className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            />
+          </div>
 
-        <button type="submit" style={{ padding: "10px", cursor: "pointer" }}>
-          Entrar
-        </button>
-      </form>
-    </div>
+          <div className="flex flex-col gap-3">
+            <button
+              type="submit"
+              className="bg-blue-700 hover:bg-blue-800 text-white text-center font-semibold py-2 px-4 rounded transition"
+            >
+              Iniciar sesión
+            </button>
+            <Link
+              to="/change-password"
+              className="bg-orange-700 hover:bg-orange-800 text-white text-center font-semibold py-2 px-4 rounded transition"
+            >
+              Olvidó su clave
+            </Link>
+          </div>
+        </form>
+      </div>
+    </main>
   );
 };
 
